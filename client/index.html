@@ -1,0 +1,41 @@
+<!doctype html>
+<html ng-app="chinchillaApp">
+  <header>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Csincsilla nyilvántartó</title>
+    <script src="/js/angularjs/1.6.1/angular.min.js"></script>
+    <script src="/js/angularjs/1.6.1/angular-route.min.js"></script>
+    <script src="/js/angularjs/1.6.1/angular-animate.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="/css/styles.css" >
+    <script src="/chinchillaApp.js"></script>
+    <script src="/controllers/mainCtrl.js"></script>
+    <script src="/controllers/homeController.js"></script>
+    <script src="/controllers/chinchillasController.js"></script>
+  </header>
+  <body ng-controller="mainCtrl" class="container">
+
+    <header id="sl-header">
+<!--
+      <div class="btn-group" uib-dropdown>
+      <button id="split-button" type="button" class="btn btn-danger">Állatok</button>
+      <button type="button" class="btn btn-danger" uib-dropdown-toggle>
+        <span class="caret"></span>
+        <span class="sr-only">Split button!</span>
+      </button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+        <li role="menuitem"><a href="#">Állatok</a></li>
+        <li class="divider"></li>
+        <li role="menuitem"><a href="#">Új állat</a></li>
+      </ul>
+    </div>
+-->
+      <button ng-click="navChinchillas()" class="btn btn-default">Állatok</button>
+    </header>
+
+    <div ng-view></div>
+
+    <footer id="sl-footer">chin-footer</footer>
+
+  </body>
+</html>

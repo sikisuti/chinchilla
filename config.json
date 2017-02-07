@@ -1,0 +1,6 @@
+{
+  "serverPort": 3000,
+  "chinDbPath": "/db/chin.db",
+  "breedDbPath": "/db/breed.db",
+  "cageDbPath": "/db/cage.db"
+}
