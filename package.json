@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/sikisuti/chinchilla#readme",
   "dependencies": {
+    "angular": "^1.6.2",
+    "angular-material": "^1.1.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "nconf": "^0.8.4",

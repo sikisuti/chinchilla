@@ -34,6 +34,38 @@ router.get('/chinchillas', function(req, res){
   });
 });
 
+router.post('/chinchilla', function(req, res){
+  var chin = req.body;
+  chin.breeder = undefined;
+  chin.birthDate = new Date(req.body.birthDate);
+  if (chin.separateDate != undefined) {chin.separateDate = new Date(req.body.separateDate);}
+  chin.lastModified = new Date();
+  if (chin._id == undefined){
+    db.chin.find({}).sort({"_id": -1}).limit(1).exec(function(err, chins){
+      chin._id = chins[0]._id + 1;
+
+      insertChin(chin, function(){
+        res.sendStatus(200);
+      });
+    });
+  } else {
+    db.chin.remove({"_id": chin._id}, {}, function(err, numRemoved){
+      insertChin(chin, function(){
+        res.sendStatus(200);
+      });
+    });
+  }
+});
+
+var insertChin = function(chin, callback){
+  db.chin.insert(chin, function(err, newDoc){
+    if (err) {console.log(err); res.sendStatus(500); return;}
+
+    db.chin.persistence.compactDatafile();
+    callback();
+  });
+};
+
 router.get('/chinchilla/:id', function(req, res){
   db.chin.findOne({"_id": parseInt(req.params.id)}, function(err, chin){
     if (err) {console.log(err); res.sendStatus(500); return;}
@@ -57,6 +89,19 @@ router.get('/breeders', function(req, res){
     } else {
       res.send(doc);
     }
+  });
+});
+
+router.get('/nextYearCounter', function(req, res){
+  db.chin.find({breederId: parseInt(req.query.breederId), birthYearChar: req.query.yearChar}).sort({"yearCounter": -1}).limit(1).exec(function(err, chins){
+    var counter;
+    if (chins.length == 0) {
+      counter = 1;
+    } else {
+      counter = chins[0].yearCounter + 1;
+    }
+
+    res.send({"counter": counter});
   });
 });
 

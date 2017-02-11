@@ -1,14 +1,9 @@
-chinchillaApp.controller('chinchillasController', ['$scope', '$http', function($scope, $http){
+chinchillaApp.controller('chinchillasController', ['$scope', '$http', '$location', 'sharedProperties',
+  function($scope, $http, $location, sharedProperties){
 
   $scope.chinchillas = [];
   $scope.breeders = [];
-  $scope.selectedChin = {
-    breeder: {
-      breederNumber: ''
-    },
-    birthYearChar: '',
-    yearCounter: ''
-  };
+  $scope.outsidersHided = true;
 
   $http.get('/chinchilla/chinchillas').then(function(response){
     $scope.chinchillas = response.data;
@@ -19,16 +14,8 @@ chinchillaApp.controller('chinchillasController', ['$scope', '$http', function($
   });
 
   $scope.selectChin = function(chin){
-    $scope.selectedChin = chin;
-    $http.get('/chinchilla/chinchilla/' + chin.motherID).then(function(response){
-      $scope.selectedChin.mother = response.data;
-    });
-    $http.get('/chinchilla/chinchilla/' + chin.fatherID).then(function(response){
-      $scope.selectedChin.father = response.data;
-    });
-    $http.get('/chinchilla/chinchilla/' + chin.nannyID).then(function(response){
-      $scope.selectedChin.nanny = response.data;
-    });
+    sharedProperties.setProperty(chin);
+    $location.path('/newChinchilla');
   }
 
   $scope.criteriaMatch = function(criteria) {
@@ -36,6 +23,17 @@ chinchillaApp.controller('chinchillasController', ['$scope', '$http', function($
       var concatenated = chin.breeder.breederNumber + chin.birthYearChar + chin.yearCounter;
       return !criteria || concatenated.toLowerCase().indexOf(criteria.toLowerCase()) !== -1;
     }
+  };
+
+  $scope.inStuffFilter = function(criteria) {
+    return function(chin) {
+      return !criteria || criteria == chin.inStuff;
+    }
+  };
+
+  $scope.navNewChinchilla = function() {
+    sharedProperties.setProperty(null);
+    $location.path('/newChinchilla');
   };
 
 }]);

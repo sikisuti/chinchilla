@@ -1,7 +1,11 @@
 <div>
   <div class="row">
-    <div class="col-sm-6 col-xs-6" id="chinList">
-      <input type="text" placeholder="Keres..." ng-model="searchString" class="form-control">
+    <input type="text" placeholder="Keres..." ng-model="searchString" class="form-control">
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="outsidersHided"> Csak állományban lévők
+    </label>
+    <button class="btn btn-success btn-xs" ng-click="navNewChinchilla()"><span class="glyphicon glyphicon-plus"></span></button>
+    <div id="chinList">
       <table class="table table-hover table-condensed table-striped">
         <thead>
           <tr>
@@ -9,10 +13,11 @@
             <th>Született</th>
             <th>Nem</th>
             <th>Ketrec</th>
+            <th>Törzskönyv</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="chin in chinchillas | orderBy: '-birthDate' | filter: criteriaMatch(searchString)">
+          <tr ng-repeat="chin in chinchillas | orderBy: '-birthDate' | filter: inStuffFilter(outsidersHided) | filter: criteriaMatch(searchString)">
             <td><button class="btn btn-link btn-xs" ng-click="selectChin(chin)">{{chin.breeder.breederNumber}}{{chin.birthYearChar}}{{chin.yearCounter}}</button></td>
             <td>{{chin.birthDate | date: 'yyyy.MM.dd.' }}</td>
             <td>{{chin.sex}}</td>
@@ -20,47 +25,12 @@
               <span ng-show="chin.cages">{{chin.cages[0].groupNumber + "/" + chin.cages[0].cageNumber}}</span>
               <span ng-show="chin.cages && chin.cages.length > 1">{{" - " + chin.cages[chin.cages.length - 1].cageNumber}}</span>
             </td>
+            <td>
+              <span ng-show="chin.pedigree">{{chin.pedigree.pedigreeYear + "/" + chin.pedigree.pedigreeSerial}}</span>
+            </td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="col-sm-6 col-xs-6">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="idNumber" class="col-sm-3 col-xs-3 control-label">Azonosító</label>
-          <div class="col-sm-8 col-xs-8">
-            <span id="idNumber" class="form-control">{{selectedChin.breeder.breederNumber+selectedChin.birthYearChar+selectedChin.yearCounter}}</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="mother" class="col-sm-3 col-xs-3 control-label">Anya</label>
-          <div class="col-sm-8 col-xs-8" ng-show="selectedChin.motherID">
-            <input type="button" value="{{selectedChin.mother.breeder.breederNumber+selectedChin.mother.birthYearChar+selectedChin.mother.yearCounter}}" id="mother" class="btn btn-link">
-          </div>
-          <label for="father" class="col-sm-3 col-xs-3 control-label">Apa</label>
-          <div class="col-sm-8 col-xs-8" ng-show="selectedChin.fatherID">
-            <input type="button" value="{{selectedChin.father.breeder.breederNumber+selectedChin.father.birthYearChar+selectedChin.father.yearCounter}}" id="father" class="btn btn-link">
-          </div>
-          <label for="nanny" class="col-sm-3 col-xs-3 control-label">Dajka</label>
-          <div class="col-sm-8 col-xs-8">
-            <input ng-show="selectedChin.nannyID" type="button" value="{{selectedChin.nanny.breeder.breederNumber+selectedChin.nanny.birthYearChar+selectedChin.nanny.yearCounter}}" id="nanny" class="btn btn-link">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="birthDate" class="col-sm-3 col-xs-3 control-label">Született</label>
-          <div class="col-sm-8 col-xs-8">
-            <span id="birthDate" class="form-control">{{selectedChin.birthDate | date: 'yyyy.MM.dd.' }}</span>
-          </div>
-          <label for="sex" class="col-sm-3 col-xs-3 control-label">Ivara</label>
-          <div class="col-sm-8 col-xs-8">
-            <span id="sex" class="form-control">{{selectedChin.sex}}</span>
-          </div>
-          <label for="color" class="col-sm-3 col-xs-3 control-label">Színe</label>
-          <div class="col-sm-8 col-xs-8">
-            <span id="color" class="form-control">{{selectedChin.color.colorDenomination}}</span>
-          </div>
-        </div>
-      </form>
     </div>
   </div>
 </div>

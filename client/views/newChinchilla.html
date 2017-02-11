@@ -1,0 +1,173 @@
+<div id="popupContainer">
+  <form class="form-horizontal" name="newChinForm" ng-submit="submit()" novalidate>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="idNumber" class="col-sm-3 control-label">Azonosító</label>
+          <div class="col-sm-3 nopadding">
+            <select ng-change="breederChanged()" class="form-control" id="breeder" ng-model="chin.breederId">
+              <option ng-repeat="breeder in breeders" ng-value="breeder._id">{{breeder.breederNumber}}</option>
+            </select>
+          </div>
+          <div class="col-sm-2 nopadding">
+            <input type="text" id="yearChar" ng-change="yearCharChanged()" class="form-control" ng-model="chin.birthYearChar">
+          </div>
+          <div class="col-sm-3 nopadding">
+            <input type="text" id="yearCounter" class="form-control" value="{{chin.yearCounter}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox col-sm-7 col-sm-offset-3">
+            <label>
+              <input type="checkbox" value="">
+              Mutasd az összeset
+            </label>
+          </div>
+          <label for="mother" class="col-sm-3 control-label">Anya</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.motherID" class="form-control" id="mother">
+              <option ng-repeat="ch in chins | filter: {sex: 'Nőstény'}" ng-value="ch._id">{{ch.breeder.breederNumber+ch.birthYearChar+ch.yearCounter}}</option>
+            </select>
+          </div>
+          <label for="father" class="col-sm-3 control-label">Apa</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.fatherID" class="form-control" id="father">
+              <option ng-repeat="chin in chins | filter: {sex: 'Bak'}" ng-value="chin._id">{{chin.breeder.breederNumber+chin.birthYearChar+chin.yearCounter}}</option>
+            </select>
+          </div>
+          <label for="nanny" class="col-sm-3 control-label">Dajka</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.nannyID" class="form-control" id="nanny">
+              <option ng-repeat="chin in chins | filter: {sex: 'Nőstény'}" ng-value="chin._id">{{chin.breeder.breederNumber+chin.birthYearChar+chin.yearCounter}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="birthDate" class="col-sm-3 control-label">Született</label>
+          <div class="col-sm-7">
+            <p class="input-group">
+              <input type="text" class="form-control" uib-datepicker-popup ng-model="chin.birthDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="popup2.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+          </div>
+          <label for="sex" class="col-sm-3 control-label">Ivara</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.sex" class="form-control" id="sex">
+              <option ng-repeat="sex in sexes" ng-value="sex">{{sex}}</option>
+            </select>
+          </div>
+          <label for="color" class="col-sm-3 control-label">Színe</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.color" class="form-control" id="color">
+              <option ng-repeat="color in colors" ng-value="color">{{color.colorDenomination}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cost" class="col-sm-3 control-label">Vételi ár</label>
+          <div class="col-sm-7">
+            <input type="number" id="cost" class="form-control" ng-model="chin.buyCost">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="brothers" class="col-sm-3 control-label">Testvérek</label>
+          <div class="col-sm-7">
+            <input type="number" id="brothers" class="form-control" ng-model="chin.noOfChoosenBrothers" placeholder="Választott testvérek száma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="separateDate" class="col-sm-3 control-label">Választási idő</label>
+          <div class="col-sm-7">
+            <p class="input-group">
+              <input type="text" class="form-control" uib-datepicker-popup ng-model="chin.separateDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="false" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="popup1.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox col-sm-7 col-sm-offset-3">
+            <label>
+              <input type="checkbox" ng-model="chin.inStuff">
+              Állományban van
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn" ng-disabled="newChinForm.$invalid" ng-value="chin._id == undefined ? 'Hozzáad' : 'Módosít'">
+          <button class="btn" ng-click="cancel()" >Mégse</button>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="well well-sm">
+          <p style="font-weight: bold; font-size: 1.5em;">Főtörzskönyv</p>
+          <div class="form-group">
+            <label for="idNumber" class="col-sm-3 control-label">Sorszám</label>
+            <div class="col-sm-3 nopadding">
+              <input type="number" class="form-control" ng-model="chin.pedigree.pedigreeYear">
+            </div>
+            <div class="col-sm-1">
+              <p class="form-control-static"> / </p>
+            </div>
+            <div class="col-sm-4 nopadding">
+              <input type="number" class="form-control" ng-model="chin.pedigree.pedigreeSerial">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="size" class="col-sm-4 control-label">Méret</label>
+            <div class="col-sm-6">
+              <input type="number" id="size" class="form-control" ng-model="chin.pedigree.sizeRate">
+            </div>
+            <label for="shapeRate" class="col-sm-4 control-label">Testforma</label>
+            <div class="col-sm-6">
+              <input type="number" id="shapeRate" class="form-control" ng-model="chin.pedigree.shapeRate">
+            </div>
+            <label for="colorTone" class="col-sm-4 control-label">Színtónus</label>
+            <div class="col-sm-6">
+              <input type="number" id="colorTone" class="form-control" ng-model="chin.pedigree.colorTone">
+            </div>
+            <label for="colorPurityRate" class="col-sm-4 control-label">Színtisztaság</label>
+            <div class="col-sm-6">
+              <input type="number" id="colorPurityRate" class="form-control" ng-model="chin.pedigree.colorPurityRate">
+            </div>
+            <label for="densityRate" class="col-sm-4 control-label">Sűrűség</label>
+            <div class="col-sm-6">
+              <input type="number" id="densityRate" class="form-control" ng-model="chin.pedigree.densityRate">
+            </div>
+            <label for="overallImpression" class="col-sm-4 control-label">Összbenyomás</label>
+            <div class="col-sm-6">
+              <input type="number" id="overallImpression" class="form-control" ng-model="chin.pedigree.overallImpressionRate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Küllembírálat</label>
+            <div class="col-sm-6">
+              <p class="form-control-static"></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="breedDepartment" class="col-sm-4 control-label">Tenyészfőosztály</label>
+            <div class="col-sm-8">
+              <input type="text" id="breedDepartment" class="form-control" ng-model="chin.pedigree.breedDepartment">
+            </div>
+            <label for="elitDepartment" class="col-sm-4 control-label">Elit főosztály</label>
+            <div class="col-sm-8">
+              <input type="text" id="elitDepartment" class="form-control" ng-model="chin.pedigree.elitDepartment">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cageSelector" class="col-sm-3 control-label">Ketrec</label>
+          <div class="col-sm-7">
+            <select ng-model="chin.cages" class="form-control" id="cageSelector" multiple>
+              <option ng-repeat="cage in cages" ng-value="cage._id">{{cage.groupNumber+'/'+cage.cageNumber+' '+cage.type}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
