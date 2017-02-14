@@ -1,4 +1,4 @@
-<mdDialog>
+<md-dialog id="getOutOfStuffDialog">
 
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -49,7 +49,7 @@
           </md-input-container>
         </div>
         <div layout="row">
-          <div layout="column">
+          <div layout="column" flex="30">
             <md-input-container>
               <label>Testtáj</label>
               <md-select ng-model="fail.bodyPart">
@@ -63,15 +63,17 @@
               </md-select>
             </md-input-container>
           </div>
-          <div layout="column">
+          <div layout="column" flex="15">
             <md-button class="md-fab md-mini md-primary" ng-click="addFail(fail)">
               <md-icon md-svg-src="/icons/ic_keyboard_arrow_right_black_48px.svg"></md-icon>
             </md-button>
           </div>
-          <md-list>
+          <md-list flex="55">
             <md-list-item ng-repeat="f in leave.fails">
-              <div class="md-list-item-text">
-                <span>{{f.bodyPart.bodyPart}}: {{f.failType.failType}}</span>
+              <div class="md-list-item-text" layout="row" flex="100">
+                <span flex="70">{{f.bodyPart.bodyPart}}: {{f.failType.failType}}</span>
+                <span flex="20"></span>
+                <button class="btn btn-link btn-xs" ng-click="removeFail(f)" flex="10">X</button>
               </div>
             </md-list-item>
           </md-list>
@@ -86,4 +88,4 @@
       </md-button>
     </md-dialog-actions>
 
-</mdDialog>
+</md-dialog>

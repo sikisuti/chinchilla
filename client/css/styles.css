@@ -11,6 +11,10 @@
   padding: 0;
 }
 
+md-dialog#getOutOfStuffDialog {
+  width: 80%;
+}
+
 md-input-container {
   margin-bottom: 10px;
   height: 30px;
