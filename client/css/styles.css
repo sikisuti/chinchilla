@@ -10,3 +10,13 @@
 .nopadding {
   padding: 0;
 }
+
+md-input-container {
+  margin-bottom: 10px;
+  height: 30px;
+}
+
+md-list-item {
+  height: 20px;
+  min-height: 0;
+}

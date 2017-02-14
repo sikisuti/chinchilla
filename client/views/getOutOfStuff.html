@@ -1,0 +1,89 @@
+<mdDialog>
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Kivétel az állományból</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+      <div layout="row">
+        <md-input-container flex>
+          <label>Oka</label>
+          <md-select ng-model="leave.leaveCouse">
+            <md-option value="Eladva">Eladva</md-option>
+            <md-option value="Elhullott">Elhullott</md-option>
+            <md-option value="Vásárolt állat felmenője">Vásárolt állat felmenője</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <label>Dátum</label>
+          <md-datepicker ng-model="leave.leaveDate"></md-datepicker>
+        </md-input-container>
+      </div>
+      <div ng-show="leave.leaveCouse=='Eladva'" layout="column">
+        <div layout="row">
+          <md-input-container flex>
+            <label>Kategória</label>
+            <md-select ng-model="leave.sellCategory">
+              <md-option ng-repeat="num in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" ng-value="num">{{num}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Eladási ár</label>
+            <input type="number" ng-model="leave.sellCost">
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <md-input-container flex>
+            <label>Eladási súly</label>
+            <input type="number" ng-model="leave.sellWeight">
+          </md-input-container>
+          <md-input-container flex>
+            <label>Pontlevonás</label>
+            <input type="number" ng-model="leave.sellWeightFailNumber">
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <div layout="column">
+            <md-input-container>
+              <label>Testtáj</label>
+              <md-select ng-model="fail.bodyPart">
+                <md-option ng-repeat="bp in bodyParts" ng-value="bp">{{bp.bodyPart}}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container>
+              <label>Hiba</label>
+              <md-select ng-model="fail.failType">
+                <md-option ng-repeat="ft in failTypes" ng-value="ft">{{ft.failType}}</md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+          <div layout="column">
+            <md-button class="md-fab md-mini md-primary" ng-click="addFail(fail)">
+              <md-icon md-svg-src="/icons/ic_keyboard_arrow_right_black_48px.svg"></md-icon>
+            </md-button>
+          </div>
+          <md-list>
+            <md-list-item ng-repeat="f in leave.fails">
+              <div class="md-list-item-text">
+                <span>{{f.bodyPart.bodyPart}}: {{f.failType.failType}}</span>
+              </div>
+            </md-list-item>
+          </md-list>
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="answer(leave)">
+       Kivétel
+      </md-button>
+    </md-dialog-actions>
+
+</mdDialog>

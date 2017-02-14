@@ -90,4 +90,49 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
     $location.path('/chinchillas');
   };
 
+  $scope.outOfStuffChanged = function(ev){
+    if (!$scope.chin.inStuff){
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'views/getOutOfStuff.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:false,
+        fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+      })
+      .then(function(answer) {
+        console.log(answer);
+      }, function() {
+        console.log('You cancelled the dialog.');
+      });
+    }
+  };
+
+  function DialogController($scope, $mdDialog, staticData) {
+
+    $scope.bodyParts = staticData.getBodyParts();
+    $scope.failTypes = staticData.getFailTypes();
+    $scope.leave = {};
+    $scope.leave.fails = [];
+
+    $scope.addFail = function(fail){
+      if ($scope.fail && $scope.fail.bodyPart && $scope.fail.failType) {
+        $scope.leave.fails.push(angular.copy(fail));
+        $scope.fail = undefined;
+      }
+    };
+
+    $scope.hide = function() {
+      $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+      $mdDialog.cancel();
+    };
+
+    $scope.answer = function(leave) {
+      $mdDialog.hide(leave);
+    };
+  }
+
 }]);
