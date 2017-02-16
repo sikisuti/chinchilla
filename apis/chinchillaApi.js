@@ -9,7 +9,22 @@ router.get('/chinchillas', function(req, res){
     if(err) {console.log(err); res.sendStatus(500); return;}
 
     var i = 0;
+    var today = new Date();
     doc.forEach(function(chin){
+
+      var compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
+      compareDate.setDate(chin.birthDate.getDate() + 50);
+      if (today < compareDate) {chin.ageType = 'Bébi';}
+      else {
+        compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
+        compareDate.setMonth(chin.birthDate.getMonth() + 8);
+        if (today < compareDate) {chin.ageType = 'Növendék';}
+        else {
+          if (chin.pedigree == undefined) {chin.ageType = 'Tenyész növendék';}
+          else {chin.ageType = 'Tenyészállat';}
+        }
+      }
+
       db.breed.findOne({"_id": chin.breederId}, function(err, breeder){
         chin.breeder = breeder;
 
@@ -37,8 +52,10 @@ router.get('/chinchillas', function(req, res){
 router.post('/chinchilla', function(req, res){
   var chin = req.body;
   chin.breeder = undefined;
+  chin.cages = undefined;
   chin.birthDate = new Date(req.body.birthDate);
   if (chin.separateDate != undefined) {chin.separateDate = new Date(req.body.separateDate);}
+  if (chin.leave != undefined && chin.leave.leaveDate != undefined) {chin.leave.leaveDate = new Date(req.body.leave.leaveDate);}
   chin.lastModified = new Date();
   if (chin._id == undefined){
     db.chin.find({}).sort({"_id": -1}).limit(1).exec(function(err, chins){

@@ -1,17 +1,21 @@
-<div>
-  <div class="row">
+<div layout="column" flex layout-margin>
+  <div layout="row">
     <input type="text" placeholder="Keres..." ng-model="searchString" class="form-control">
+  </div>
+  <div layout="row" layout-margin>
     <label class="checkbox-inline">
       <input type="checkbox" ng-model="outsidersHided"> Csak állományban lévők
     </label>
     <button class="btn btn-success btn-xs" ng-click="navNewChinchilla()"><span class="glyphicon glyphicon-plus"></span></button>
-    <div id="chinList">
+  </div>
+  <div layout="row" style="overflow-y: scroll;" flex>
       <table class="table table-hover table-condensed table-striped">
         <thead>
           <tr>
             <th>Azonosító</th>
             <th>Született</th>
             <th>Nem</th>
+            <th>Kor</th>
             <th>Ketrec</th>
             <th>Törzskönyv</th>
           </tr>
@@ -21,6 +25,7 @@
             <td><button class="btn btn-link btn-xs" ng-click="selectChin(chin)">{{chin.breeder.breederNumber}}{{chin.birthYearChar}}{{chin.yearCounter}}</button></td>
             <td>{{chin.birthDate | date: 'yyyy.MM.dd.' }}</td>
             <td>{{chin.sex}}</td>
+            <td>{{chin.ageType}}</td>
             <td>
               <span ng-show="chin.cages">{{chin.cages[0].groupNumber + "/" + chin.cages[0].cageNumber}}</span>
               <span ng-show="chin.cages && chin.cages.length > 1">{{" - " + chin.cages[chin.cages.length - 1].cageNumber}}</span>
@@ -31,6 +36,5 @@
           </tr>
         </tbody>
       </table>
-    </div>
   </div>
 </div>

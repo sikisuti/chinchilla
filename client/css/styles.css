@@ -3,6 +3,10 @@
   overflow-y: scroll;
 }
 
+.md-button{
+  min-height: 0px;
+}
+
 #cageSelector{
   height: 120px;
 }
@@ -13,6 +17,11 @@
 
 md-dialog#getOutOfStuffDialog {
   width: 80%;
+}
+
+.inline-block{
+  display: inline-block;
+  margin: 15px;
 }
 
 md-input-container {

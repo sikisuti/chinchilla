@@ -20,7 +20,7 @@
             <md-option value="Vásárolt állat felmenője">Vásárolt állat felmenője</md-option>
           </md-select>
         </md-input-container>
-        <md-input-container>
+        <md-input-container ng-hide="leave.leaveCouse=='Vásárolt állat felmenője'">
           <label>Dátum</label>
           <md-datepicker ng-model="leave.leaveDate"></md-datepicker>
         </md-input-container>
@@ -73,11 +73,17 @@
               <div class="md-list-item-text" layout="row" flex="100">
                 <span flex="70">{{f.bodyPart.bodyPart}}: {{f.failType.failType}}</span>
                 <span flex="20"></span>
-                <button class="btn btn-link btn-xs" ng-click="removeFail(f)" flex="10">X</button>
+                <button class="btn btn-link btn-xs" ng-click="removeFail($index)" flex="10">X</button>
               </div>
             </md-list-item>
           </md-list>
         </div>
+      </div>
+      <div ng-show="leave.leaveCouse=='Elhullott'" layout="column">
+        <md-input-container flex>
+          <label>Elhullás oka</label>
+          <input type="text" ng-model="leave.deathCouse">
+        </md-input-container>
       </div>
     </md-dialog-content>
 

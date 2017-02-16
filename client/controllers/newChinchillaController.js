@@ -27,7 +27,8 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
     sharedProperties.setProperty(null);
   } else {
     $scope.chin = {
-      color: $scope.colors[0]
+      color: $scope.colors[0],
+      inStuff: true
     };
   }
 
@@ -102,9 +103,14 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
       })
       .then(function(answer) {
         console.log(answer);
+        $scope.chin.leave = answer;
+        $scope.chin.inStuff = false;
+        $scope.chin.cageIds = undefined;
       }, function() {
         console.log('You cancelled the dialog.');
       });
+    } else {
+      $scope.chin.leave = undefined;
     }
   };
 
@@ -122,6 +128,10 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
       }
     };
 
+    $scope.removeFail = function(index){
+      $scope.leave.fails.splice(index, 1);
+    };
+
     $scope.hide = function() {
       $mdDialog.hide();
     };
@@ -131,6 +141,8 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
     };
 
     $scope.answer = function(leave) {
+      if (leave.fails.length == 0) {leave.fails = undefined;}
+      if (leave.leaveDate == null) {leave.leaveDate = undefined;}
       $mdDialog.hide(leave);
     };
   }

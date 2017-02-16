@@ -13,7 +13,33 @@ chinchillaApp.config(function($routeProvider){
     .when('/newChinchilla', {
       templateUrl: '/views/newChinchilla.html',
       controller: 'newChinchillaController'
+    })
+    .when('/cages', {
+      templateUrl: '/views/cages.html',
+      controller: 'cagesController'
     });
+});
+
+chinchillaApp.filter('distinctCageGroupsFilter', function(){
+  return function(items){
+    if (items == undefined) {return;}
+    var filteredList = [];
+    items.forEach(function(item){
+      var found = false;
+      for (var i = 0; i < filteredList.length; i++) {
+        if (item.groupNumber == filteredList[i].groupNumber && item.type == filteredList[i].type){
+          found = true;
+          break;
+        }
+      }
+
+      if (!found){
+        filteredList.push(item);
+      }
+    });
+
+    return filteredList;
+  };
 });
 
 chinchillaApp.service('sharedProperties', function () {

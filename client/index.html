@@ -17,30 +17,18 @@
     <script src="/controllers/homeController.js"></script>
     <script src="/controllers/chinchillasController.js"></script>
     <script src="/controllers/newChinchillaController.js"></script>
+    <script src="/controllers/cagesController.js"></script>
   </header>
-  <body ng-controller="mainCtrl" class="container">
+  <body ng-controller="mainCtrl" class="container" layout="column">
 
-    <header id="sl-header">
-<!--
-      <div class="btn-group" uib-dropdown>
-      <button id="split-button" type="button" class="btn btn-danger">Állatok</button>
-      <button type="button" class="btn btn-danger" uib-dropdown-toggle>
-        <span class="caret"></span>
-        <span class="sr-only">Split button!</span>
-      </button>
-      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-        <li role="menuitem"><a href="#">Állatok</a></li>
-        <li class="divider"></li>
-        <li role="menuitem"><a href="#">Új állat</a></li>
-      </ul>
-    </div>
--->
-      <button ng-click="navChinchillas()" class="btn btn-default">Állatok</button>
+    <header id="sl-header" layout="row" layout-margin flex="5">
+      <button ng-click="nav('/chinchillas')" class="btn btn-default">Állatok</button>
+      <button ng-click="nav('/cages')" class="btn btn-default">Ketrecek</button>
     </header>
 
-    <div ng-view></div>
+    <div ng-view layout="row" flex></div>
 
-    <footer id="sl-footer">chin-footer</footer>
+    <footer id="sl-footer" layout="row" layout-margin flex="5">chin-footer</footer>
 
   </body>
 </html>
