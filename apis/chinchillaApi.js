@@ -53,6 +53,7 @@ router.post('/chinchilla', function(req, res){
   var chin = req.body;
   chin.breeder = undefined;
   chin.cages = undefined;
+  chin.ageType = undefined;
   chin.birthDate = new Date(req.body.birthDate);
   if (chin.separateDate != undefined) {chin.separateDate = new Date(req.body.separateDate);}
   if (chin.leave != undefined && chin.leave.leaveDate != undefined) {chin.leave.leaveDate = new Date(req.body.leave.leaveDate);}
