@@ -1,0 +1,4 @@
+1. Install nodeJS
+2. Install git
+3. Clone repository https://github.com/sikisuti/chinchilla.git
+4. npm install
