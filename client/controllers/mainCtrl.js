@@ -15,6 +15,7 @@ chinchillaApp.controller('mainCtrl', ['$scope', '$location', 'chinchillaService'
   var gainSeparateActions = function(){
 
     var rtnList = [];
+    var tmpCageIds = [];
 
     var inStuffAndHasMotherList = chinchillas.filter(function(chin){
       return  chin.motherCageIds != undefined &&
@@ -23,12 +24,22 @@ chinchillaApp.controller('mainCtrl', ['$scope', '$location', 'chinchillaService'
     });
 
     inStuffAndHasMotherList.forEach(function(chin){
-      var actionDate = new Date(chin.birthDate);
-      actionDate.setDate(actionDate.getDate() + 50);
-      var inDays = Math.floor((actionDate - new Date()) / (1000 * 60 * 60 * 24))
+      if (!chin.cages[0].isClosed && tmpCageIds.indexOf(chin.cages[0]._id == -1)){
+        var closeDate = new Date(chin.birthDate);
+        closeDate.setDate(closeDate.getDate() + 5);
+        var closeInDays = Math.floor((closeDate - new Date()) / (1000 * 60 * 60 * 24))
+        tmpCageIds.push(chin.cages[0]._id);
+        rtnList.push({
+          inDays: closeInDays,
+          description: '(' + closeInDays + 'nap) ' + chin.cages[0].groupNumber + '/' + chin.cages[0].cageNumber + ' ketrecet zárd le.'
+        });
+      }
+      var separateDate = new Date(chin.birthDate);
+      separateDate.setDate(separateDate.getDate() + 50);
+      var separateInDays = Math.floor((separateDate - new Date()) / (1000 * 60 * 60 * 24))
       rtnList.push({
-        inDays: inDays,
-        description: '(' + inDays + 'nap) ' + chin.idNumber + ' leválasztása. Ketrec: ' + chin.cages[0].groupNumber + '/' + chin.cages[0].cageNumber
+        inDays: separateInDays,
+        description: '(' + separateInDays + 'nap) ' + chin.idNumber + ' leválasztása. Ketrec: ' + chin.cages[0].groupNumber + '/' + chin.cages[0].cageNumber
       });
     });
 
