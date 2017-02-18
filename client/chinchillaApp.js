@@ -55,6 +55,35 @@ chinchillaApp.service('sharedProperties', function () {
     };
 });
 
+chinchillaApp.service('chinchillaService', ['$http', function($http){
+  var chinchillas;
+  var queryInProgress = false;
+
+  return {
+    getChinchillas: function(callback) {
+      if (queryInProgress){
+        var retry = setInterval(function(){
+          if (!queryInProgress){
+            clearInterval(retry);
+            callback(chinchillas);
+          }
+        }, 1000);
+      } else {
+        if (chinchillas == undefined) {
+          queryInProgress = true;
+          $http.get('/chinchilla/chinchillas').then(function(chins){
+            queryInProgress = false;
+            chinchillas = chins.data;
+            callback(chinchillas);
+          }, function(err){console.log(err)});
+        } else {
+          callback(chinchillas);
+        }
+      }
+    }
+  };
+}]);
+
 chinchillaApp.service('staticData', function(){
   this.getBodyParts = function(){
     return [

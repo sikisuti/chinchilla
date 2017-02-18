@@ -1,12 +1,13 @@
-chinchillaApp.controller('chinchillasController', ['$scope', '$http', '$location', 'sharedProperties',
-  function($scope, $http, $location, sharedProperties){
+chinchillaApp.controller('chinchillasController', ['$scope', '$http', '$location', 'sharedProperties', 'chinchillaService',
+  function($scope, $http, $location, sharedProperties, chinchillaService){
 
   $scope.chinchillas = [];
   $scope.breeders = [];
   $scope.outsidersHided = true;
 
-  $http.get('/chinchilla/chinchillas').then(function(response){
-    $scope.chinchillas = response.data;
+  chinchillaService.getChinchillas(function(chins){
+    $scope.chinchillas = chins;
+    $scope.$applyAsync();
   });
 
   $http.get('/chinchilla/breeders').then(function(response){

@@ -24,6 +24,11 @@
     <header id="sl-header" layout="row" layout-margin flex="5">
       <button ng-click="nav('/chinchillas')" class="btn btn-default">Állatok</button>
       <button ng-click="nav('/cages')" class="btn btn-default">Ketrecek</button>
+      <div id="actionsList" flex>
+        <md-list>
+          <md-list-item ng-repeat="action in actions | orderBy: inDays">{{action.description}}</md-list-item>
+        </md-list>
+      </div>
     </header>
 
     <div ng-view layout="row" flex></div>

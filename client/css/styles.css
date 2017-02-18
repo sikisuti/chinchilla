@@ -1,6 +1,22 @@
+th {
+  text-align: center;
+}
+
 #chinList {
   height: 500px;
   overflow-y: scroll;
+}
+
+#actionsList {
+  overflow-y: hidden;
+  background-color: whitesmoke;
+  z-index: 99;
+  border: 1px solid gray;
+  height: 30px;
+}
+
+#actionsList:hover {
+  height: 300px;
 }
 
 .md-button{

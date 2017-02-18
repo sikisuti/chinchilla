@@ -12,48 +12,76 @@ router.get('/chinchillas', function(req, res){
     var today = new Date();
     doc.forEach(function(chin){
 
-      var compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
-      compareDate.setDate(chin.birthDate.getDate() + 50);
-      if (today < compareDate) {chin.ageType = 'Bébi';}
-      else {
-        compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
-        compareDate.setMonth(chin.birthDate.getMonth() + 8);
-        if (today < compareDate) {chin.ageType = 'Növendék';}
-        else {
-          if (chin.pedigree == undefined) {chin.ageType = 'Tenyész növendék';}
-          else {chin.ageType = 'Tenyészállat';}
-        }
-      }
+      addAgeType(chin, today);
 
-      db.breed.findOne({"_id": chin.breederId}, function(err, breeder){
-        chin.breeder = breeder;
-
-        if (chin.hasOwnProperty('cageIds')){
-          db.cage.find({"_id": {$in: chin.cageIds}}, function(err, cages){
-
-            chin.cages = cages;
-
+      addMotherCageIds(chin, function(){
+        addBreeder(chin, function(){
+          addCages(chin, function(){
             if (++i == doc.length){
               res.send(doc);
             }
-
           });
-        } else {
-          if (++i == doc.length){
-            res.send(doc);
-          }
-        }
-
+        });
       });
     });
   });
 });
+
+var addAgeType = function(chin, today){
+  var compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
+  compareDate.setDate(chin.birthDate.getDate() + 50);
+  if (today < compareDate) {chin.ageType = 'Bébi';}
+  else {
+    compareDate = new Date(chin.birthDate.getFullYear(), chin.birthDate.getMonth(), chin.birthDate.getDate(), 0, 0, 0, 0);
+    compareDate.setMonth(chin.birthDate.getMonth() + 8);
+    if (today < compareDate) {chin.ageType = 'Növendék';}
+    else {
+      if (chin.pedigree == undefined) {chin.ageType = 'Tenyész növendék';}
+      else {chin.ageType = 'Tenyészállat';}
+    }
+  }
+};
+
+var addMotherCageIds = function(chin, callback){
+  if (chin.hasOwnProperty('motherID')){
+    db.chin.findOne({"_id": chin.motherID}, function(err, mother){
+      chin.motherCageIds = mother.cageIds;
+
+      callback();
+    });
+  } else {
+    callback();
+  }
+};
+
+var addBreeder = function(chin, callback){
+  db.breed.findOne({"_id": chin.breederId}, function(err, breeder){
+    chin.breeder = breeder;
+    chin.idNumber = chin.breeder.breederNumber + chin.birthYearChar + chin.yearCounter;
+
+    callback();
+  });
+};
+
+var addCages = function(chin, callback){
+  if (chin.hasOwnProperty('cageIds')){
+    db.cage.find({"_id": {$in: chin.cageIds}}, function(err, cages){
+
+      chin.cages = cages;
+      callback();
+    });
+  } else {
+    callback();
+  }
+};
 
 router.post('/chinchilla', function(req, res){
   var chin = req.body;
   chin.breeder = undefined;
   chin.cages = undefined;
   chin.ageType = undefined;
+  chin.idNumber = undefined;
+  chin.motherCageIds = undefined;
   chin.birthDate = new Date(req.body.birthDate);
   if (chin.separateDate != undefined) {chin.separateDate = new Date(req.body.separateDate);}
   if (chin.leave != undefined && chin.leave.leaveDate != undefined) {chin.leave.leaveDate = new Date(req.body.leave.leaveDate);}

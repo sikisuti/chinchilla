@@ -1,26 +1,110 @@
 <div layout="column" flex>
-  <div layout="row" layout-align="center">
+  <!--<div layout="row" layout-align="center">
     <md-radio-group ng-model="selectedCageType">
       <md-radio-button class="inline-block" value="Tenyész">Tenyész</md-radio-button>
       <md-radio-button class="inline-block" value="Növendék">Növendék</md-radio-button>
       <md-radio-button class="inline-block" value="">Mindkettő</md-radio-button>
     </md-radio-group>
-  </div>
-  <div layout="row" layout-align="center" flex>
-    <uib-accordion style="overflow-y: scroll;" flex="50">
-      <div uib-accordion-group class="panel-default"
-        ng-repeat="cage in cages | distinctCageGroupsFilter | orderBy:['type','groupNumber'] | filter: selectedCageType"
-        heading="{{cage.groupNumber + ' ' + cage.type}}">
-        <table>
-          <tbody>
-            <!--<tr><td>{{cage.groupNumber + '/' + cage.cageNumber + ' ' + cage.type}}</td></tr>-->
-            <tr ng-repeat="c in cages | filter: filterCagesByGroupAndType(cage)">
-              <td>{{c.groupNumber + '/' + c.cageNumber + ' ' + c.type}}</td>
-            </tr>
-          <tbody>
-        </table>
+  </div>-->
+  <div layout="row" flex>
+    <div layout="column" flex="50">
+      <div layout="row" layout-align="center" flex>
+        <uib-accordion style="overflow-y: scroll;" flex="80">
+          <div uib-accordion-group class="panel-default"
+            ng-repeat="cage in cages | distinctCageGroupsFilter | orderBy:['type','groupNumber'] | filter: 'Tenyész'"
+            heading="{{cage.groupNumber + ' ' + cage.type}}">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ketrec</th>
+                  <th>Bak</th>
+                  <th>Nőstény</th>
+                  <th>Egyéb</th>
+                  <th>Lezárva</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--<tr><td>{{cage.groupNumber + '/' + cage.cageNumber + ' ' + cage.type}}</td></tr>-->
+                <tr ng-repeat="c in cages | filter: filterCagesByGroupAndType(cage)">
+                  <td>{{c.groupNumber + '/' + c.cageNumber}}</td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Tenyészállat', 'Tenyész növendék'], ['Bak'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Tenyészállat', 'Tenyész növendék'], ['Nőstény'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Növendék', 'Bébi'], ['Nőstény', 'Bak', 'Nem eldönthető'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                  <td>
+                    <md-checkbox ng-model="c.isClosed" ng-change="saveCage(c)" aria-label="isClosed"></md-checkbox>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+          </div>
+        </uib-accordion>
       </div>
-    </uib-accordion>
+    </div>
+    <div layout="column" flex="50">
+      <div layout="row" layout-align="center" flex>
+        <uib-accordion style="overflow-y: scroll;" flex="80">
+          <div uib-accordion-group class="panel-default"
+            ng-repeat="cage in cages | distinctCageGroupsFilter | orderBy:['type','groupNumber'] | filter: 'Növendék'"
+            heading="{{cage.groupNumber + ' ' + cage.type}}">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ketrec</th>
+                  <th>Bak</th>
+                  <th>Nőstény</th>
+                  <th>Egyéb</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--<tr><td>{{cage.groupNumber + '/' + cage.cageNumber + ' ' + cage.type}}</td></tr>-->
+                <tr ng-repeat="c in cages | filter: filterCagesByGroupAndType(cage)">
+                  <td>{{c.groupNumber + '/' + c.cageNumber}}</td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Tenyészállat', 'Tenyész növendék'], ['Bak'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Tenyészállat', 'Tenyész növendék'], ['Nőstény'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                  <td>
+                    <md-list>
+                      <md-list-item ng-repeat="chin in chins | filter: filterChinchillasByCage(c._id, ['Növendék', 'Bébi'], ['Nőstény', 'Bak', 'Nem eldönthető'])">
+                        <span>{{chin.idNumber}}</span>
+                      </md-list-item>
+                    </md-list>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+          </div>
+        </uib-accordion>
+      </div>
+    </div>
   </div>
   <!--<div layout="row" flex>
     <div layout="column" flex="33">

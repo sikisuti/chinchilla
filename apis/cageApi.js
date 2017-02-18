@@ -12,4 +12,25 @@ router.get('/cages', function(req, res){
   });
 });
 
+router.post('/cage', function(req, res){
+  var cage = req.body;
+  console.log(cage);
+  db.cage.remove({"_id": cage._id}, {}, function(err, numRemoved){
+    console.log('removed ' + numRemoved + ' item(s)');
+    insertCage(cage, function(){
+      console.log('cage inserted');
+      res.sendStatus(200);
+    });
+  });
+});
+
+var insertCage = function(cage, callback){
+  db.cage.insert(cage, function(err, newDoc){
+    if (err) {console.log(err); res.sendStatus(500); return;}
+
+    db.cage.persistence.compactDatafile();
+    callback();
+  });
+};
+
 module.exports = router;
