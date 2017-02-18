@@ -19,4 +19,6 @@ app.use(require('./apis'));
 
 var port = nconf.get('serverPort');
 var server = app.listen(port);
+console.log('Csincsilla nyilvántartó rendszer');
+console.log('NE ZÁRD BE AMíG HASZNÁLOD A RENDSZERT!');
 console.log("Listening on port " + port);

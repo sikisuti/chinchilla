@@ -2,3 +2,10 @@
 2. Install git
 3. Clone repository https://github.com/sikisuti/chinchilla.git
 4. npm install
+
+OR
+
+1. Install nodeJS
+2. Install google drive
+3. Get folder "chinchilla" available via google drive
+4. Place starter's shortcut on the desktop
