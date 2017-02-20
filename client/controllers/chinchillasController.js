@@ -5,7 +5,7 @@ chinchillaApp.controller('chinchillasController', ['$scope', '$http', '$location
   $scope.breeders = [];
   $scope.outsidersHided = true;
 
-  chinchillaService.getChinchillas(function(chins){
+  chinchillaService.getChinchillas(false, function(chins){
     $scope.chinchillas = chins;
     $scope.$applyAsync();
   });

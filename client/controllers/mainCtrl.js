@@ -1,15 +1,21 @@
 chinchillaApp.controller('mainCtrl', ['$scope', '$location', 'chinchillaService', function($scope, $location, chinchillaService){
+  var originatorEv;
 
   var chinchillas;
   $scope.actions = [];
 
-  chinchillaService.getChinchillas(function(chins){
+  chinchillaService.getChinchillas(false, function(chins){
     chinchillas = chins;
     $scope.actions = $scope.actions.concat(gainSeparateActions());
   });
 
   $scope.nav = function(path){
     $location.path(path);
+  };
+
+  $scope.openStatMenu = function($mdMenu, ev){
+    originatorEv = ev;
+    $mdMenu.open(ev);
   };
 
   var gainSeparateActions = function(){

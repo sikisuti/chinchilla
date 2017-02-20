@@ -1,0 +1,50 @@
+<div layout="column" flex>
+  <div layout="row" layout-align="center">
+    <table id="statisticsTable">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>Bak</td>
+          <td>Nőstény</td>
+          <td>?</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Bébi</td>
+          <td>{{countFilter({ageType: 'Bébi', sex: 'Bak'})}}</td>
+          <td>{{countFilter({ageType: 'Bébi', sex: 'Nőstény'})}}</td>
+          <td style="border-right: 1px solid black;">{{countFilter({ageType: 'Bébi', sex: 'Nem eldönthető'})}}</td>
+          <td>{{countFilter({ageType: 'Bébi'})}}</td>
+        </tr>
+        <tr>
+          <td>Növendék</td>
+          <td>{{countFilter({ageType: 'Növendék', sex: 'Bak'})}}</td>
+          <td>{{countFilter({ageType: 'Növendék', sex: 'Nőstény'})}}</td>
+          <td style="border-right: 1px solid black;">{{countFilter({ageType: 'Növendék', sex: 'Nem eldönthető'})}}</td>
+          <td>{{countFilter({ageType: 'Növendék'})}}</td>
+        </tr>
+        <tr>
+          <td>Tenyész növendék</td>
+          <td>{{countFilter({ageType: 'Tenyész növendék', sex: 'Bak'})}}</td>
+          <td>{{countFilter({ageType: 'Tenyész növendék', sex: 'Nőstény'})}}</td>
+          <td style="border-right: 1px solid black;">{{countFilter({ageType: 'Tenyész növendék', sex: 'Nem eldönthető'})}}</td>
+          <td>{{countFilter({ageType: 'Tenyész növendék'})}}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid black;">
+          <td>Tenyészállat</td>
+          <td>{{countFilter({ageType: 'Tenyészállat', sex: 'Bak'})}}</td>
+          <td>{{countFilter({ageType: 'Tenyészállat', sex: 'Nőstény'})}}</td>
+          <td style="border-right: 1px solid black;">{{countFilter({ageType: 'Tenyészállat', sex: 'Nem eldönthető'})}}</td>
+          <td>{{countFilter({ageType: 'Tenyészállat'})}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>{{countFilter({sex: 'Bak'})}}</td>
+          <td>{{countFilter({sex: 'Nőstény'})}}</td>
+          <td style="border-right: 1px solid black;">{{countFilter({sex: 'Nem eldönthető'})}}</td>
+          <td>{{countFilter({})}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

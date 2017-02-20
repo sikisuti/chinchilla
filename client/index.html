@@ -14,16 +14,36 @@
     <link rel="stylesheet" href="/css/styles.css" >
     <script src="/chinchillaApp.js"></script>
     <script src="/controllers/mainCtrl.js"></script>
-    <script src="/controllers/homeController.js"></script>
+    <script src="/controllers/summaryController.js"></script>
+    <script src="/controllers/statIncreaseController.js"></script>
     <script src="/controllers/chinchillasController.js"></script>
     <script src="/controllers/newChinchillaController.js"></script>
     <script src="/controllers/cagesController.js"></script>
   </header>
   <body ng-controller="mainCtrl" class="container" layout="column">
 
-    <header id="sl-header" layout="row" layout-margin flex="5">
-      <button ng-click="nav('/chinchillas')" class="btn btn-default">Állatok</button>
-      <button ng-click="nav('/cages')" class="btn btn-default">Ketrecek</button>
+    <header id="sl-header" layout="row" layout-margin flex="10">
+      <md-menu>
+        <md-button ng-click="nav('/chinchillas')" class="btn btn-default">Állatok</md-button>
+        <md-menu-content>
+        </md-menu-content>
+      </md-menu>
+      <md-menu>
+        <md-button ng-click="nav('/cages')" class="btn btn-default">Ketrecek</md-button>
+        <md-menu-content>
+        </md-menu-content>
+      </md-menu>
+      <md-menu>
+        <md-button class="btn btn-default" ng-click="openStatMenu($mdMenu, $event)">Statisztikák</md-button>
+        <md-menu-content>
+          <md-menu-item>
+            <md-button ng-click="nav('/stat/summary')">Állomány</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button ng-click="nav('/stat/increase')">Szaporulat</md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
       <div id="actionsList" flex>
         <md-list>
           <md-list-item ng-repeat="action in actions | orderBy: inDays">{{action.description}}</md-list-item>

@@ -3,8 +3,8 @@ var chinchillaApp = angular.module('chinchillaApp', ['ngRoute', 'ui.bootstrap', 
 chinchillaApp.config(function($routeProvider){
   $routeProvider
     .when('/', {
-      templateUrl: '/views/home.html',
-      controller: 'homeController'
+      templateUrl: '/views/summary.html',
+      controller: 'summaryController'
     })
     .when('/chinchillas', {
       templateUrl: '/views/chinchillas.html',
@@ -17,6 +17,14 @@ chinchillaApp.config(function($routeProvider){
     .when('/cages', {
       templateUrl: '/views/cages.html',
       controller: 'cagesController'
+    })
+    .when('/stat/summary', {
+      templateUrl: '/views/summary.html',
+      controller: 'summaryController'
+    })
+    .when('/stat/increase', {
+      templateUrl: '/views/statIncrease.html',
+      controller: 'statIncreaseController'
     });
 });
 
@@ -60,7 +68,7 @@ chinchillaApp.service('chinchillaService', ['$http', function($http){
   var queryInProgress = false;
 
   return {
-    getChinchillas: function(callback) {
+    getChinchillas: function(force, callback) {
       if (queryInProgress){
         var retry = setInterval(function(){
           if (!queryInProgress){
@@ -69,7 +77,7 @@ chinchillaApp.service('chinchillaService', ['$http', function($http){
           }
         }, 1000);
       } else {
-        if (chinchillas == undefined) {
+        if (force || chinchillas == undefined) {
           queryInProgress = true;
           $http.get('/chinchilla/chinchillas').then(function(chins){
             queryInProgress = false;
@@ -80,6 +88,18 @@ chinchillaApp.service('chinchillaService', ['$http', function($http){
           callback(chinchillas);
         }
       }
+    },
+
+    insertChinchilla: function(chin, callback) {
+      $http.post('/chinchilla/chinchilla', chin, {headers:{'Content-Type':'application/json'}})
+        .then(function(response){
+          queryInProgress = true;
+          $http.get('/chinchilla/chinchillas').then(function(chins){
+            queryInProgress = false;
+            chinchillas = chins.data;
+            callback(chin);
+          }, function(err){console.log(err)});
+        }, function(err){console.log(err);});
     }
   };
 }]);

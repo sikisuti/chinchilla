@@ -1,0 +1,32 @@
+<div layout="column" flex>
+  <div layout="row" flex>
+    <div layout="column" flex="50">
+      <div layout="row" layout-align="center">Bak</div>
+      <div layout="row" layout-align="center" flex>
+        <uib-accordion style="overflow-y: scroll;" flex="80">
+          <div uib-accordion-group class="panel-default"
+            ng-repeat="chin in chins | filter: {sex: 'Bak'} | orderBy: '-point'">
+            <uib-accordion-heading>
+              {{chin.idNumber}}
+              <div style="float: right;">{{chin.point}}</div>
+            </uib-accordion-heading>
+          </div>
+        </uib-accordion>
+      </div>
+    </div>
+    <div layout="column" flex="50">
+      <div layout="row" layout-align="center">Nőstény</div>
+      <div layout="row" layout-align="center" flex>
+        <uib-accordion style="overflow-y: scroll;" flex="80">
+          <div uib-accordion-group class="panel-default"
+            ng-repeat="chin in chins | filter: {sex: 'Nőstény'} | orderBy: '-point'">
+            <uib-accordion-heading>
+              {{chin.idNumber}}
+              <div style="float: right;">{{chin.point}}</div>
+            </uib-accordion-heading>
+          </div>
+        </uib-accordion>
+      </div>
+    </div>
+  </div>
+</div>

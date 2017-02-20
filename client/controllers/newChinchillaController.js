@@ -1,5 +1,5 @@
-chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$location', 'sharedProperties', '$mdDialog',
-  function($scope, $http, $location, sharedProperties, $mdDialog){
+chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$location', 'sharedProperties', '$mdDialog', 'chinchillaService',
+  function($scope, $http, $location, sharedProperties, $mdDialog, chinchillaService){
 
   $scope.sexes = ['Nem eldönthető', 'Nőstény', 'Bak'];
   $scope.colors = [
@@ -17,7 +17,7 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
   });
 
   if (sharedProperties.getProperty() != null){
-    $scope.chin = sharedProperties.getProperty();
+    $scope.chin = angular.copy(sharedProperties.getProperty());
     var colorIndex = $scope.colors.map(function(e){return e.colorShortName}).indexOf($scope.chin.color.colorShortName);
     $scope.chin.color = $scope.colors[colorIndex];
     $scope.chin.birthDate = new Date($scope.chin.birthDate);
@@ -69,22 +69,20 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
   };
 
   $scope.submit = function(ev){
-    $http.post('/chinchilla/chinchilla', angular.toJson($scope.chin), {headers:{'Content-Type':'application/json'}})
-      .then(function(response){
-        $mdDialog.show(
-          $mdDialog.alert()
-            .parent(angular.element(document.querySelector('#popupContainer')))
-            .clickOutsideToClose(true)
-            .title(($scope.chin._id == undefined ? 'Létrehozás' : 'Módosítás') + ' sikeres!')
-            .textContent()
-            .ariaLabel('Alert Dialog Demo')
-            .ok('Ok')
-            .targetEvent(ev)
-        ).finally(function(){$location.path('/chinchillas');});
+    chinchillaService.insertChinchilla(angular.toJson($scope.chin), function(chin){
 
-      }, function(err){
-        console.log(err);
-      });
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title(($scope.chin._id == undefined ? 'Létrehozás' : 'Módosítás') + ' sikeres!')
+          .textContent()
+          .ariaLabel('Alert Dialog Demo')
+          .ok('Ok')
+          .targetEvent(ev)
+      ).finally(function(){$location.path('/chinchillas');});
+
+    });
   };
 
   $scope.cancel = function(){
@@ -107,7 +105,7 @@ chinchillaApp.controller('newChinchillaController', ['$scope', '$http', '$locati
         $scope.chin.inStuff = false;
         $scope.chin.cageIds = undefined;
       }, function() {
-        console.log('You cancelled the dialog.');
+        $scope.chin.inStuff = true;
       });
     } else {
       $scope.chin.leave = undefined;
