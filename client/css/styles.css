@@ -20,6 +20,10 @@ th {
   padding: 10px;
 }
 
+.grayed {
+  color: gray;
+}
+
 #actionsList:hover {
   height: 300px;
 }

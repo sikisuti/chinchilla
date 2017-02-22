@@ -7,9 +7,20 @@
           <div uib-accordion-group class="panel-default"
             ng-repeat="chin in chins | filter: {sex: 'Bak'} | orderBy: '-point'">
             <uib-accordion-heading>
-              {{chin.idNumber}}
+              {{chin.idNumber}} {{chin.cageNumber}}
               <div style="float: right;">{{chin.point}}</div>
             </uib-accordion-heading>
+            <div layout="row" ng-repeat="pair in chin.pairs | orderBy: '-point'" ng-class="{'grayed': pair.leave}">
+              <div layout="column" flex>
+                {{pair.idNumber}}
+              </div>
+              <div layout="column" flex>
+                {{pair.cageNumber}}
+              </div>
+              <div layout="column" layout-align="end center" flex>
+                {{pair.point}}
+              </div>
+            </div>
           </div>
         </uib-accordion>
       </div>
@@ -21,9 +32,20 @@
           <div uib-accordion-group class="panel-default"
             ng-repeat="chin in chins | filter: {sex: 'Nőstény'} | orderBy: '-point'">
             <uib-accordion-heading>
-              {{chin.idNumber}}
+              {{chin.idNumber}} {{chin.cageNumber}}
               <div style="float: right;">{{chin.point}}</div>
             </uib-accordion-heading>
+            <div layout="row" ng-repeat="pair in chin.pairs | orderBy: '-point'" ng-class="{'grayed': pair.leave}">
+              <div layout="column" flex>
+                {{pair.idNumber}}
+              </div>
+              <div layout="column" flex>
+                {{pair.cageNumber}}
+              </div>
+              <div layout="column" layout-align="end center" flex>
+                {{pair.point}}
+              </div>
+            </div>
           </div>
         </uib-accordion>
       </div>

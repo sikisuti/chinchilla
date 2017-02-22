@@ -68,6 +68,12 @@ var addCages = function(chin, callback){
     db.cage.find({"_id": {$in: chin.cageIds}}, function(err, cages){
 
       chin.cages = cages;
+      if (cages.length > 0) {
+        chin.cageNumber = (cages[0].type == 'Tenyész ketrec' ? 'T' : 'N') + cages[0].groupNumber + '/' + cages[0].cageNumber;
+        if (cages.length > 1){
+          chin.cageNumber += ' - ' + cages[cages.length -1].cageNumber;
+        }
+      }
       callback();
     });
   } else {
@@ -79,6 +85,7 @@ router.post('/chinchilla', function(req, res){
   var chin = req.body;
   chin.breeder = undefined;
   chin.cages = undefined;
+  chin.cageNumber = undefined;
   chin.ageType = undefined;
   chin.idNumber = undefined;
   chin.motherCageIds = undefined;
